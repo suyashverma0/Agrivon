@@ -1,0 +1,12 @@
+{
+  "name": "AGRIVON",
+  "description": "AGRIVON - A complete agriculture ecosystem connecting Farmers, Shop Owners, and Farm Workers with Weather, AI Disease Detection, Crop Prices, Job Marketplace, and Smart Matching.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

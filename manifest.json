@@ -1,0 +1,21 @@
+{
+  "name": "AGRIVON",
+  "short_name": "AGRIVON",
+  "description": "🌾 AGRIVON - Sustainable Indian Agriculture Portal connecting Farmers, Shop Owners, and Farm Workers.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#059669",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='192' height='192' viewBox='0 0 24 24' fill='none' stroke='%23059669' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M12 22V12M12 12c-4 0-6-3-6-6 4 0 6 3 6 6zM12 12c4 0 6-3 6-6-4 0-6 3-6 6z' fill='%23a7f3d0'/></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='512' height='512' viewBox='0 0 24 24' fill='none' stroke='%23059669' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'><path d='M12 22V12M12 12c-4 0-6-3-6-6 4 0 6 3 6 6zM12 12c4 0 6-3 6-6-4 0-6 3-6 6z' fill='%23a7f3d0'/></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

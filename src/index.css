@@ -1,0 +1,201 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Poppins', 'Manrope', 'Inter', sans-serif;
+  --color-brand-primary: #2E7D32;
+  --color-brand-secondary: #4CAF50;
+  --color-brand-bg: #F8FAF7;
+  --color-brand-text: #1B1B1B;
+}
+
+/* Custom modern transitions and premium aesthetics */
+body {
+  font-family: var(--font-sans);
+  background-color: #F8FAF7;
+  color: #1B1B1B;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: var(--font-display);
+}
+
+/* Modern SaaS Global Overrides for Theme-Green */
+.theme-green {
+  background-color: #F8FAF7 !important;
+  color: #1B1B1B !important;
+}
+
+/* Redefined crispy white cards with soft premium shadow */
+.theme-green .bg-white {
+  background-color: #ffffff !important;
+  border: 1px solid rgba(46, 125, 50, 0.08) !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 4px 20px -2px rgba(46, 125, 50, 0.04), 0 2px 8px -1px rgba(0, 0, 0, 0.02) !important;
+}
+
+/* Secondary cards / panels */
+.theme-green .bg-slate-50, 
+.theme-green .bg-slate-100,
+.theme-green .bg-emerald-50,
+.theme-green .bg-emerald-500\/5 {
+  background-color: #ffffff !important;
+  border: 1px solid rgba(46, 125, 50, 0.1) !important;
+  border-radius: 0.75rem !important;
+}
+
+/* Clean up borders globally */
+.theme-green .border-slate-150, 
+.theme-green .border-slate-155, 
+.theme-green .border-slate-205, 
+.theme-green .border-slate-200,
+.theme-green .border-slate-100,
+.theme-green .border-slate-105,
+.theme-green .border-emerald-500\/15,
+.theme-green .border-emerald-950,
+.theme-green .border-emerald-900\/30,
+.theme-green .border-emerald-500\/20,
+.theme-green .border {
+  border-color: rgba(46, 125, 50, 0.1) !important;
+  border-width: 1px !important;
+}
+
+/* Active buttons and solid indicators: Highlighted with green pill background #2E7D32 */
+.theme-green .bg-emerald-700,
+.theme-green .bg-emerald-600,
+.theme-green .bg-emerald-800,
+.theme-green .bg-green-600,
+.theme-green .bg-green-700,
+.theme-green .bg-gradient-to-r.from-emerald-600 {
+  background-color: #2E7D32 !important;
+  background-image: none !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 9999px !important; /* Pill style */
+  font-weight: 600 !important;
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2) !important;
+  text-shadow: none !important;
+}
+
+.theme-green .bg-emerald-700:hover,
+.theme-green .bg-emerald-600:hover,
+.theme-green .bg-green-600:hover {
+  background-color: #246327 !important;
+}
+
+/* Keep buttons flat, clickable, elegant */
+.theme-green button:not(.bg-emerald-700):not(.bg-emerald-600):not(.bg-green-600):not(.bg-gradient-to-r):not(.bg-red-500) {
+  transform: none !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.theme-green button:hover {
+  transform: translateY(-1px) !important;
+}
+
+/* Text refinements - Premium high contrast dark charcoal */
+.theme-green .text-slate-900, 
+.theme-green .text-slate-850, 
+.theme-green .text-slate-800,
+.theme-green .text-slate-805,
+.theme-green .text-slate-808,
+.theme-green .text-slate-705,
+.theme-green .text-slate-700,
+.theme-green .text-slate-905,
+.theme-green .text-gray-900,
+.theme-green .text-gray-700,
+.theme-green .text-emerald-950,
+.theme-green h1,
+.theme-green h2,
+.theme-green h3,
+.theme-green h4 {
+  color: #1B1B1B !important;
+  font-weight: 600 !important;
+}
+
+/* Soft secondary text */
+.theme-green .text-slate-500, 
+.theme-green .text-slate-505,
+.theme-green .text-slate-600,
+.theme-green .text-slate-655,
+.theme-green .text-gray-500,
+.theme-green .text-slate-400,
+.theme-green .text-slate-405,
+.theme-green .text-emerald-400,
+.theme-green .text-emerald-300 {
+  color: #616161 !important;
+  font-weight: 400 !important;
+}
+
+/* Premium Primary/Secondary green text accents */
+.theme-green .text-emerald-600,
+.theme-green .text-green-600,
+.theme-green .text-emerald-700,
+.theme-green .text-green-700,
+.theme-green .text-brand-success {
+  color: #2E7D32 !important;
+  font-weight: 600 !important;
+}
+
+/* Tables styling */
+.theme-green thead tr {
+  background-color: #F8FAF7 !important;
+}
+
+.theme-green table th {
+  color: #616161 !important;
+  font-weight: 600 !important;
+  font-size: 0.75rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  border-bottom: 1px solid rgba(46, 125, 50, 0.1) !important;
+}
+
+.theme-green table tr:hover {
+  background-color: rgba(46, 125, 50, 0.02) !important;
+}
+
+/* Input Fields - Pure clean SaaS styling */
+.theme-green input, 
+.theme-green textarea, 
+.theme-green select {
+  background-color: #ffffff !important;
+  border: 1px solid rgba(46, 125, 50, 0.15) !important;
+  color: #1B1B1B !important;
+  font-weight: 500 !important;
+  border-radius: 0.5rem !important;
+  box-shadow: none !important;
+  placeholder-color: #9E9E9E !important;
+  transition: all 0.2s ease;
+}
+
+.theme-green input:focus, 
+.theme-green textarea:focus, 
+.theme-green select:focus {
+  border-color: #2E7D32 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1) !important;
+}
+
+.theme-green input::placeholder, 
+.theme-green textarea::placeholder {
+  color: #9E9E9E !important;
+}
+
+/* Sidebar design - Sleek Minimal Left Sidebar is white/grey with dark/green highlights */
+.theme-green aside {
+  background-color: #ffffff !important;
+  border-right: 1px solid rgba(46, 125, 50, 0.08) !important;
+}
+
+/* Banners gradients override to solid premium subtle banner colors instead of loud neon */
+.theme-green .from-emerald-800,
+.theme-green .via-emerald-950,
+.theme-green .to-teal-900 {
+  background-image: none !important;
+  background-color: #F0FDF4 !important;
+  border: 1px solid rgba(46, 125, 50, 0.15) !important;
+  color: #2E7D32 !important;
+  box-shadow: none !important;
+}
