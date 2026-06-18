@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useApp } from "../context/AppContext";
+import { useAuth } from "../context/AuthContext";
 import { Role } from "../types";
 import { 
   Sprout, LogIn, ArrowRight, Sparkles, ShieldCheck, Cpu, 
@@ -113,7 +114,8 @@ const LOCAL_TRANSLATIONS = {
 };
 
 export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onLoginSuccess }) => {
-  const { users, setCurrentUserById, registerNewUser, language, setLanguage } = useApp();
+  const { users, registerNewUser, language, setLanguage } = useApp();
+  const { login } = useAuth();
 
   const [authType, setAuthType] = useState<"login" | "register">("login");
   const [showPassword, setShowPassword] = useState(false);
@@ -146,7 +148,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onLoginSuccess }) 
     }
   }, []);
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setSuccessMsg("");
@@ -157,28 +159,33 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onLoginSuccess }) 
       return;
     }
 
-    // Lookup user in state
-    const match = users.find((u) => {
-      const isEmailMatch = u.email && u.email.trim().toLowerCase() === trimmedInput.toLowerCase();
-      const isMobileMatch = u.mobileNumber && u.mobileNumber.trim() === trimmedInput;
-      const isPasswordMatch = u.password === password || (!u.password && password === "AdminSecurePassword123" && u.role === "SuperAdmin");
-      return (isEmailMatch || isMobileMatch) && isPasswordMatch;
-    });
-
-    if (match) {
+    try {
+      await login(trimmedInput, password);
+      
       if (rememberMe) {
         localStorage.setItem("ag_remembered_username", trimmedInput);
       } else {
         localStorage.removeItem("ag_remembered_username");
       }
-      setCurrentUserById(match.id);
-      onLoginSuccess();
-    } else {
-      setError(translate("error_invalid_login"));
+      
+      setSuccessMsg("Logged in successfully! Loading your Agrivon profile...");
+      setTimeout(() => {
+        onLoginSuccess();
+      }, 1000);
+    } catch (err: any) {
+      console.error("Login attempt failed:", err);
+      const errMsg = err.message || "";
+      if (errMsg.includes("Email not confirmed") || errMsg.includes("Email address has not been confirmed")) {
+        setError("Login attempt failed: Email not confirmed. Please check your inbox and verify your email.");
+      } else if (errMsg.includes("Invalid login credentials") || errMsg.includes("invalid_credentials") || errMsg.includes("invalid") || errMsg.includes("Incorrect")) {
+        setError("Login attempt failed: Invalid login credentials. Please check your email and password.");
+      } else {
+        setError(`Login attempt failed: ${errMsg}`);
+      }
     }
   };
 
-  const handleRegisterSubmit = (e: React.FormEvent) => {
+  const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setSuccessMsg("");
@@ -199,7 +206,7 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onLoginSuccess }) 
       return;
     }
 
-    // Check unique email and mobile phone number
+    // Check unique email and mobile phone number locally if users list is populated
     const userExists = users.some(
       (u) => 
         u.email.trim().toLowerCase() === email.trim().toLowerCase() || 
@@ -211,24 +218,28 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onLoginSuccess }) 
       return;
     }
 
-    // Set up default registration data values to prevent dashboard lookup breakages
-    let profileData: any = { name: fullName };
-    
-    const registeredUser = registerNewUser(
-      selectedRole,
-      profileData,
-      email.trim(),
-      password,
-      mobile.trim()
-    );
+    try {
+      // Set up default registration data values to prevent dashboard lookup breakages
+      let profileData: any = { name: fullName };
+      
+      await registerNewUser(
+        selectedRole,
+        profileData,
+        email.trim(),
+        password,
+        mobile.trim()
+      );
 
-    setSuccessMsg(translate("success_registration"));
-    
-    // Auto redirection timeout
-    setTimeout(() => {
-      setCurrentUserById(registeredUser.id);
-      onLoginSuccess();
-    }, 1500);
+      setSuccessMsg(translate("success_registration"));
+      
+      // Auto redirection timeout
+      setTimeout(() => {
+        onLoginSuccess();
+      }, 1500);
+    } catch (err: any) {
+      console.error("Registration failed:", err);
+      setError(err.message || "Registration failed. This email may already be in use or format is invalid.");
+    }
   };
 
   return (

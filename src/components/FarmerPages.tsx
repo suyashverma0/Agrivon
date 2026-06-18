@@ -1683,11 +1683,13 @@ export const CommunityPage: React.FC = () => {
 
 // --- PAGE 7: MESSAGES ---
 export const MessagesPage: React.FC = () => {
-  const { messages, sendChatMessage, users, currentUser, language } = useApp();
-  const [recipientId, setRecipientId] = useState("");
+  const { messages, sendChatMessage, users, currentUser, language, activeChatPartnerId, setActiveChatPartnerId } = useApp();
+  const [recipientId, setRecipientId] = useState(activeChatPartnerId || "");
   const [chatText, setChatText] = useState("");
   const [translations, setTranslations] = useState<{ [msgId: string]: string }>({});
   const [loadingTranslationId, setLoadingTranslationId] = useState<string | null>(null);
+
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const filteredRecipients = users.filter((u) => u.id !== currentUser.id);
   const activeChatRecipient = users.find((u) => u.id === recipientId);
@@ -1698,6 +1700,16 @@ export const MessagesPage: React.FC = () => {
       (m.senderId === currentUser.id && m.receiverId === recipientId) ||
       (m.senderId === recipientId && m.receiverId === currentUser.id)
   );
+
+  useEffect(() => {
+    if (activeChatPartnerId) {
+      setRecipientId(activeChatPartnerId);
+    }
+  }, [activeChatPartnerId]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatMessages.length, recipientId]);
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
@@ -1821,6 +1833,7 @@ export const MessagesPage: React.FC = () => {
                   );
                 })
               )}
+              <div ref={messagesEndRef} />
             </div>
 
             {/* Form submit */}
@@ -2108,8 +2121,8 @@ export const YieldPredictionPage: React.FC = () => {
 
 
 // --- PAGE 10: ORDERS (AGRI SUPPLY MARKETPLACE) ---
-export const OrdersPage: React.FC = () => {
-  const { orders, currentUser, products, placeOrder } = useApp();
+export const OrdersPage: React.FC<{ onViewTab?: (tab: string) => void }> = ({ onViewTab }) => {
+  const { orders, currentUser, products, placeOrder, setActiveChatPartnerId } = useApp();
   const [selectedProdForPurchase, setSelectedProdForPurchase] = useState("");
   const [qty, setQty] = useState(1);
   const [deliveryAddress, setDeliveryAddress] = useState("Kanakpur Block B, House 57");
@@ -2278,7 +2291,10 @@ export const OrdersPage: React.FC = () => {
               >
                 
                 {/* Upper block */}
-                <div className="p-5 space-y-4">
+                <div 
+                  onClick={() => { setInspectedProduct(p); setActiveDetailImage(p.image); }}
+                  className="p-5 space-y-4 cursor-pointer hover:bg-slate-50/10 transition-colors group"
+                >
                   <div className="relative">
                     <ImageWithFallback 
                       src={currentImg} 
@@ -2507,6 +2523,10 @@ export const OrdersPage: React.FC = () => {
                 <span className="bg-emerald-100 text-emerald-800 text-[9px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full inline-block mb-1">
                   Verified {inspectedProduct.category} Catalog Listing
                 </span>
+                <div className="flex items-center gap-1.5 text-[9px] text-slate-400 font-mono bg-slate-50 border border-slate-100 rounded-lg px-2 py-0.5 w-fit mt-1 mb-2">
+                  <span className="text-emerald-700 font-bold">GET</span>
+                  <span>/product/{inspectedProduct.id}</span>
+                </div>
                 <h3 className="text-lg font-black text-slate-900">{inspectedProduct.name}</h3>
                 <p className="text-[11px] text-slate-400">Sold by certified village merchant: "{inspectedProduct.shopName}"</p>
               </div>
@@ -2549,6 +2569,14 @@ export const OrdersPage: React.FC = () => {
                 </div>
               </div>
 
+              {/* Product description */}
+              <div className="space-y-1.5">
+                <span className="text-[10px] uppercase font-bold text-slate-400 block font-mono">Product Description</span>
+                <p className="text-xs bg-slate-50 border border-slate-100 rounded-xl p-3 text-slate-700 leading-relaxed font-semibold">
+                  {inspectedProduct.description}
+                </p>
+              </div>
+
               {/* Interactive swap gallery */}
               {inspectedProduct.images && inspectedProduct.images.length > 0 && (
                 <div className="space-y-1.5 p-3 bg-slate-50 rounded-2xl border border-slate-100">
@@ -2585,6 +2613,18 @@ export const OrdersPage: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <Phone className="w-4 h-4 text-slate-400" /> Seller Contact: <span className="text-slate-800 font-mono font-bold">{inspectedProduct.contactNumber || "Hotline Connected"}</span>
                 </div>
+                
+                <button
+                  onClick={() => {
+                    setActiveChatPartnerId(inspectedProduct.shopOwnerId);
+                    onViewTab?.("messages");
+                    setInspectedProduct(null);
+                  }}
+                  className="w-full mt-2 py-2 px-4 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-xs rounded-xl shadow-3xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                  Contact Seller (Direct Message 👤)
+                </button>
               </div>
 
               {/* Technical Grid Parameter blocks (Use for Real) */}

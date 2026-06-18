@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { AppProvider, useApp } from "./context/AppContext";
+import { AuthProvider } from "./context/AuthContext";
 import { WelcomeScreen } from "./components/WelcomeScreen";
 
 // Page component imports
@@ -173,7 +174,7 @@ function MainAppContent() {
         case "yield":
           return <YieldPredictionPage />;
         case "orders":
-          return <OrdersPage />;
+          return <OrdersPage onViewTab={(t) => setFarmerActiveTab(t)} />;
         case "profile":
           return <FarmerProfilePage />;
         case "settings":
@@ -515,8 +516,10 @@ function MainAppContent() {
 
 export default function App() {
   return (
-    <AppProvider>
-      <MainAppContent />
-    </AppProvider>
+    <AuthProvider>
+      <AppProvider>
+        <MainAppContent />
+      </AppProvider>
+    </AuthProvider>
   );
 }
